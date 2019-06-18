@@ -1,6 +1,8 @@
 'use strict';
 
 const path = require('path')
+const webpack = require('webpack')
+
 module.exports = {
 	entry: {
 		index: './src/index.js',
@@ -10,7 +12,7 @@ module.exports = {
 		path: path.join(__dirname, 'dist'),
 		filename: "[name].js"
 	},
-	mode: 'production',
+	mode: 'development',
 	module: {
 		rules: [
 			{
@@ -41,5 +43,12 @@ module.exports = {
 				use: 'file-loader'
 			}
 		]
+	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	],
+	devServer: {
+		contentBase: './dist',
+		hot: true
 	}
 }
