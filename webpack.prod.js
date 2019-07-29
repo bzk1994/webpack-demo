@@ -5,11 +5,12 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin') 
 
 module.exports = {
 	entry: {
-		index: './src/index.js',
-		search: './src/search.js'
+		index: './src/index/index.js',
+		search: './src/search/search.js'
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -34,7 +35,14 @@ module.exports = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'less-loader'
+					'less-loader',
+					{
+						loader: 'px2rem-loader',
+						options: {
+							remUnit: 75,
+							remPrecision: 8
+						}
+					}
 				]
 			},
 			{
@@ -68,6 +76,36 @@ module.exports = {
 		new OptimizeCSSAssetsPlugin({
 			assetNameRegExp: /\.css$/g,
 			cssProcessor: require('cssnano')
+		}),
+		new HtmlWebpackPlugin({
+			template: path.join(__dirname, 'src/search/index.html'),
+			filename: 'search.html',
+			chunkes: ['search'],
+			chunks: ['search'],
+			inject: true,
+			minify: {
+				html5: true,
+				collapseWhitespace: true,
+				preserveLineBreaks: false,
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: false
+			}
+		}),
+		new HtmlWebpackPlugin({
+			template: path.join(__dirname, 'src/index/index.html'),
+			filename: 'index.html',
+			chunkes: ['index'],
+			chunks: ['index'],
+			inject: true,
+			minify: {
+				html5: true,
+				collapseWhitespace: true,
+				preserveLineBreaks: false,
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: false
+			}
 		}),
 		new CleanWebpackPlugin()
 	]
