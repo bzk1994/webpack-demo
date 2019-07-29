@@ -4,6 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 
 module.exports = {
 	entry: {
@@ -67,6 +68,7 @@ module.exports = {
 		new OptimizeCSSAssetsPlugin({
 			assetNameRegExp: /\.css$/g,
 			cssProcessor: require('cssnano')
-		})
+		}),
+		new CleanWebpackPlugin()
 	]
 }
