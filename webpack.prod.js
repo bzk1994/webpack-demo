@@ -28,7 +28,7 @@ const setMPA = () => {
 			new HtmlWebpackPlugin({
 				template: path.join(__dirname, `src/${pageName}/index.html`),
 				filename: `${pageName}.html`,
-				chunks: [pageName],
+				chunks: ['vendors', pageName],
 				inject: true,
 				minify: {
 					html5: true,
@@ -117,19 +117,32 @@ module.exports = {
 			cssProcessor: require('cssnano')
 		}),
 		new CleanWebpackPlugin(),
-		new HtmlWebpackExternalsPlugin({
-			externals: [
-				{
-					module: 'react',
-					entry: 'https://lib.baomitu.com/react/16.9.0/cjs/react.production.min.js',
-					global: 'React',
-				},
-				{
-					module: 'react-dom',
-					entry: 'https://lib.baomitu.com/react-dom/16.9.0-alpha.0/cjs/react-dom-server.browser.production.min.js',
-					global: 'ReactDom',
-				},
-			],
-		})
-	].concat(htmlWebpackPlugins),
+	].concat(
+		htmlWebpackPlugins,
+		// new HtmlWebpackExternalsPlugin({			//提取基础库，使用CDN方式引入
+		// 	externals: [
+		// 		{
+		// 			module: 'react',
+		// 			entry: 'https://11.url.cn/now/lib/16.2.0/react.min.js',
+		// 			global: 'React',
+		// 		},
+		// 		{
+		// 			module: 'react-dom',
+		// 			entry: 'https://11.url.cn/now/lib/16.2.0/react-dom.min.js',
+		// 			global: 'ReactDOM',
+		// 		},
+		// 	],
+		// })
+	),
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					name: "vendors",
+					chunks: "all",
+					test: /(react|react-dom)/
+				}
+			}
+		}
+	}
 }
