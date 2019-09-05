@@ -28,7 +28,7 @@ const setMPA = () => {
 			new HtmlWebpackPlugin({
 				template: path.join(__dirname, `src/${pageName}/index.html`),
 				filename: `${pageName}.html`,
-				chunks: ['vendors', pageName],
+				chunks: ['common','vendor', pageName],
 				inject: true,
 				minify: {
 					html5: true,
@@ -136,11 +136,18 @@ module.exports = {
 	),
 	optimization: {
 		splitChunks: {
+			minSize: 0,
 			cacheGroups: {
 				commons: {
-					name: "vendors",
+					name: "common",
 					chunks: "all",
-					test: /(react|react-dom)/
+					// test: /(react|react-dom)/
+					minChunks: 2
+				},
+				vendor: {
+					name: 'vendor',
+					chunks: 'all',
+					test: /(react|react-dom)/  //基础库分离
 				}
 			}
 		}
