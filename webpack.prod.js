@@ -55,7 +55,7 @@ module.exports = {
 		path: path.join(__dirname, 'dist'),
 		filename: "[name]_[chunkhash:8].js"
 	},
-	mode: 'production',
+	mode: 'none',
 	module: {
 		rules: [
 			{
@@ -117,6 +117,7 @@ module.exports = {
 			cssProcessor: require('cssnano')
 		}),
 		new CleanWebpackPlugin(),
+		new webpack.optimize.ModuleConcatenationPlugin(),
 	].concat(
 		htmlWebpackPlugins,
 		// new HtmlWebpackExternalsPlugin({			//提取基础库，使用CDN方式引入
@@ -134,22 +135,22 @@ module.exports = {
 		// 	],
 		// })
 	),
-	optimization: {
-		splitChunks: {
-			minSize: 0,
-			cacheGroups: {
-				commons: {
-					name: "common",
-					chunks: "all",
-					// test: /(react|react-dom)/
-					minChunks: 2
-				},
-				vendor: {
-					name: 'vendor',
-					chunks: 'all',
-					test: /(react|react-dom)/  //基础库分离
-				}
-			}
-		}
-	}
+	// optimization: {
+	// 	splitChunks: {
+	// 		minSize: 0,
+	// 		cacheGroups: {
+	// 			commons: {
+	// 				name: "common",
+	// 				chunks: "all",
+	// 				// test: /(react|react-dom)/
+	// 				minChunks: 2
+	// 			},
+	// 			vendor: {
+	// 				name: 'vendor',
+	// 				chunks: 'all',
+	// 				test: /(react|react-dom)/  //基础库分离
+	// 			}
+	// 		}
+	// 	}
+	// }
 }

@@ -1,5 +1,5 @@
 'use strict';
-
+import { hello } from './hello'
 import {common} from  '../../common/index';
 
-document.write(common())
+document.write(hello())
